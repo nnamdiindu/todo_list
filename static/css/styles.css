@@ -1,0 +1,33 @@
+
+.main-section {
+    height: calc(100vh - 160px); /* 100vh minus navbar + footer height */
+}
+/* 
+.full-width-input {
+    width: 100%;
+    max-width: 600px; /* Optional: limit the width on large screens */
+
+
+.top-left-container {
+    padding: 2rem;
+}
+
+.large-placeholder::placeholder {
+    font-size: 1.5rem; /* Adjust to your preference */
+    color: #6c757d;    /* Optional: placeholder text color */
+}
+
+.no-border-input {
+    border: none;
+    outline: none; /* Optional: removes focus outline */
+    background-color: transparent; /* Optional: if you want no background */
+    color: white; /* Optional: match text color to background */
+}
+
+.no-border-input::placeholder {
+    font-size: 1.5rem;
+    color: #ccc; /* Lighter placeholder color */
+}
+.footer-div {
+    height: 20px
+}

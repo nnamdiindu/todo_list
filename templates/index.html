@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Navbar Section -->
+    <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand px-5" href="#">ToDoList</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- This div pushes the buttons to the right -->
+        <div class="ms-auto d-flex">
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout') }}"><button class="btn btn-secondary">Logout</button></a>
+            {% else %}
+            <a href="{{ url_for('login') }}"><button class="btn btn-primary me-2">Login</button></a>
+            <a href="{{ url_for('register') }}"><button class="btn btn-secondary">Sign Up</button></a>
+            {% endif %}
+
+        </div>
+        </div>
+    </div>
+    </nav>
+    {% if not current_user.is_authenticated %}
+    <div class="container-fluid bg-secondary py-3">
+        <span class="navbar-brand mb-0 h1 text-light px-5">Create your to-do list below</span>
+    </div>
+    {% else %}
+    <div class="container-fluid bg-secondary py-3">
+        <span class="navbar-brand mb-0 h1 text-light px-5">Hello! {{ current_user.name }}</span><br/>
+        <span class="navbar-brand mb-0 h1 text-light px-5">Your To-do list are below</span>
+    </div>
+    {% endif %}
+
+    <!-- Body Section -->
+    <div class="main-section text-white ">
+        <div class="top-left-container">
+            <form action="{{ url_for('add_task') }}" method="post">
+                <input id="inputField" type="text" name="task" class="form-control no-border-input large-placeholder py-4 px-4" placeholder="type here e.g. buy bacon" autofocus/>
+            </form>
+            {% if tasks %}
+                {% for task in tasks %}
+                <!-- <div class="container"> -->
+                    <header class="bg-light d-flex flex-wrap justify-content-center py-1 mb-1 mt-3">
+                        <a href="/" class="px-4 d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                            <span class="fs-4">{{ task.task_name }}</span>
+                        </a>
+                        {% if current_user.is_authenticated %}
+                        <ul class="nav nav-pills text-end">
+                            <li class="nav-item"><a href="{{ url_for('edit', task_id=task.id) }}" class="nav-link"><button class="btn btn-sm btn-success">Edit</button></a></li>
+                            <li class="nav-item"><a href="{{ url_for('delete', task_id=task.id) }}" class="nav-link"><button class="btn btn-sm btn-danger">Delete</button></a></li>
+                        </ul>
+                        {% endif %}
+                    </header>
+                <!-- </div> -->
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+    </div>
+<!-- Footer Section -->
+    <!-- <div class="footer-div bg-secondary text-center py-3">
+        <footer>
+            <p>Footer</p>
+        </footer>
+    </div> -->
+{% endblock %}
