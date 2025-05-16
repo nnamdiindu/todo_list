@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Integer, select, ForeignKey
@@ -54,9 +54,21 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return render_template("index.html", current_user=current_user)
+    # Initialize session tasks list if it doesn't exist
+    if "guest_tasks" not in session:
+        session["guest_tasks"] = []
+
+    if request.method == "POST":
+        task = request.form.get("task")
+        if task:
+            # Update session with new task
+            guest_tasks = session["guest_tasks"]
+            guest_tasks.append(task)
+            session["guest_tasks"] = guest_tasks
+
+    return render_template("index.html", tasks=session["guest_tasks"], current_user=current_user)
 
 @app.route("/dashboard")
 @login_required

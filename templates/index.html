@@ -16,7 +16,7 @@
         <!-- This div pushes the buttons to the right -->
         <div class="ms-auto d-flex">
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('logout') }}"><button class="btn btn-secondary">Logout</button></a>
+            <a href="{{ url_for('logout') }}"><button class="btn btn-danger">Logout</button></a>
             {% else %}
             <a href="{{ url_for('login') }}"><button class="btn btn-primary me-2">Login</button></a>
             <a href="{{ url_for('register') }}"><button class="btn btn-secondary">Sign Up</button></a>
@@ -40,16 +40,33 @@
     <!-- Body Section -->
     <div class="main-section text-white ">
         <div class="top-left-container">
+            {% if current_user.is_authenticated %}
             <form action="{{ url_for('add_task') }}" method="post">
                 <input id="inputField" type="text" name="task" class="form-control no-border-input large-placeholder py-4 px-4" placeholder="type here e.g. buy bacon" autofocus/>
             </form>
+            {% else %}
+            <form action="{{ url_for('home') }}" method="post">
+                <input type="text" name="task" class="form-control no-border-input large-placeholder py-4 px-4" placeholder="type here e.g. buy bacon" autofocus/>
+            </form>
+            {% endif %}
+
+
             {% if tasks %}
                 {% for task in tasks %}
                 <!-- <div class="container"> -->
+                    {% if current_user.is_authenticated %}
                     <header class="bg-light d-flex flex-wrap justify-content-center py-1 mb-1 mt-3">
                         <a href="/" class="px-4 d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                             <span class="fs-4">{{ task.task_name }}</span>
                         </a>
+                    {% else %}
+                        <header class="bg-light d-flex flex-wrap justify-content-center py-1 mb-1 mt-3">
+                        <a href="/" class="px-4 d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                            <span class="fs-4">{{ task }}</span>
+                        </a>
+                    {% endif %}
+
+
                         {% if current_user.is_authenticated %}
                         <ul class="nav nav-pills text-end">
                             <li class="nav-item"><a href="{{ url_for('edit', task_id=task.id) }}" class="nav-link"><button class="btn btn-sm btn-success">Edit</button></a></li>
@@ -64,9 +81,9 @@
         
     </div>
 <!-- Footer Section -->
-    <!-- <div class="footer-div bg-secondary text-center py-3">
+    < <div class="footer-div bg-secondary text-center">
         <footer>
-            <p>Footer</p>
+            <p class="text-light">© 2025 Developed by Nnamdi Odi</p>
         </footer>
-    </div> -->
+    </div>
 {% endblock %}
